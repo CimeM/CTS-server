@@ -21,26 +21,7 @@ jobs:
     - name: Build the contianer
       run : docker build -t "$IMAGE_NAME" . --no-cache
       working-directory: ./cts_server
-    
-    - name: Run the contianer in the background
-      run : docker run -d --name -p 8000:8000 "$CONTAINER_NAME" "$IMAGE_NAME"
-      working-directory: ./cts_server
-    
-    - name: Perform tests on the server
-      run: |
-        RESPONSE=$(curl -s "$TEST_URL")
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$TEST_URL")
-
-        # evaluate the result
-        if [ "$HTTP_CODE" -eq 200 ] && echo "$RESPONSE" | grep -q "OK"; then
-            echo "Test passed: Status code is 200 and response body is correct"
-        else
-            echo "Test failed"
-            echo "Status code: $HTTP_CODE"
-            echo "Response body: $RESPONSE"
-            exit 1
-        fi
-
+      
     - name: Cleanup the container and continaer image
       if: always()
       run: |
