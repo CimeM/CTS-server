@@ -1,0 +1,30 @@
+name: CI - Build the server on every commit
+
+on: 
+  push:
+    # only trigger on branches, not on tags
+    branches: '**'
+
+env:
+  IMAGE_NAME: cts_server
+  CONTAINER_NAME: ctsservertest
+  TEST_URL: http://localhost:8000/ping
+
+jobs:
+  build-and-test:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+  
+    - name: Build the contianer
+      run : docker build -t "$IMAGE_NAME" . --no-cache
+      working-directory: ./cts_server
+      
+    - name: Cleanup the container and continaer image
+      if: always()
+      run: |
+        docker stop "$CONTAINER_NAME" || true
+        docker rm "$CONTAINER_NAME" || true
+        docker rmi "$IMAGE_NAME" || true
