@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ctsserver
-        image: {{ .Values.registry.url }}:ctsserver
+        image: {{ .Values.registry.url }}{{ .Values.image.name }}:{{ .Values.image.tag }}
         imagePullPolicy: Always
         ports:
         - containerPort: 80
