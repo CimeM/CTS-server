@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+registry:
+  regcred:
+    enabled: false
+  url: registry.digitalocean.com/digitalocean-simple-container-registry/single-image
+
+namespace: default 
+
+app:
+  url:
+    course_root: cts.mydomain.com
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {
+    cert-manager.io/issuer: "letsencript-http"
+  }

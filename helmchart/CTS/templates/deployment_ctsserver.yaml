@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ctsserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ctsserver-{{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: ctsserver-{{ .Release.Name }}
+    spec:
+      containers:
+      - name: ctsserver
+        image: {{ .Values.registry.url }}:ctsserver
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: cts-web-port
+        env:
+        - name: TESTVAR
+          value: "{{ .Chart.Version }}"
+      imagePullSecrets:
+      - name: regcred

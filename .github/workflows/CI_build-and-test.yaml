@@ -1,4 +1,4 @@
-name: CI - Build the server on every commit
+name: CI - Build and test
 
 on: 
   push:
@@ -21,6 +21,10 @@ jobs:
     - name: Build the contianer
       run : docker build -t "$IMAGE_NAME" . --no-cache
       working-directory: ./cts_server
+
+    - name: Lint the helm chart
+      run : helm lint --debug .
+      working-directory: ./helmchart/CTS
       
     - name: Cleanup the container and continaer image
       if: always()
