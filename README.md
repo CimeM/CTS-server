@@ -3,12 +3,13 @@
 Connectivity Test Server (CTS) is used to perform a connectivity check for globally distributed backends.
 
 Example use:
-Front end applications perform the check on backends deployed in different regions and connect to the one that performs hte best.
+Front end applications perform the check on backends deployed in different regions and connect to the one that performs the best (fastest response time).
 
 Features:
-    - CI and CD pipelines
+    - GitHub CI and CD pipelines
     - merging to main branch automatically deploys the server
-    - Google Cloud as target platform for deployments.
+    - Google Cloud as target platform for deployments
+    - dockerized application
 
 ## Build the application
 
@@ -40,7 +41,7 @@ Perform automated functionality test:
 
 ``` bash
 cd cts_server
-bash ./functiuonal-test.sh
+bash ./functional-test.sh
 ```
 
 ## How to deploy the application
@@ -99,3 +100,20 @@ Remove the cluster
 cd infrastructure
 bash ./cleanup.sh
 ```
+
+## Suggestions for infrastructure setup to be resilient to failures of compute nodes and scale automatically in case of increased CPU
+
+- enable autoscaling of cluster nodes (min, desired, max)
+- HA clusters - deploy minimum 3 nodes per cluster
+- nodes are distributed in multiple zones in the region
+- introduce limits and requests for the pods
+- monitoring and capacity planing (if possible)
+- isolate problematic pods/deployments with taints and tolerations
+- enable cached responses to api requests
+- limit the rate of requests (ex: 50 every minute per user)
+- enable failover responses to requests
+- enable offload to different region (if possible)
+- adopt faster technologies (like redis) that keep the data in RAM
+- investigate why compute nodes fail (eliminate bugs)
+- design the frontend to include delays in strategic places
+- stress test the infrastructure and applications
