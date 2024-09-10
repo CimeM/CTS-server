@@ -8,7 +8,6 @@ on:
 env:
   IMAGE_NAME: cts_server
   CONTAINER_NAME: ctsservertest
-  TEST_URL: http://localhost:8000/ping
 
 jobs:
   build-and-test:
@@ -29,6 +28,4 @@ jobs:
     - name: Cleanup the container and continaer image
       if: always()
       run: |
-        docker stop "$CONTAINER_NAME" || true
-        docker rm "$CONTAINER_NAME" || true
         docker rmi "$IMAGE_NAME" || true

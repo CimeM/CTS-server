@@ -11,8 +11,11 @@ on:
 env:
   IMAGE_NAME: cts_server
   DEPLOYMENT_NAME: ctsserver
-  REGISTRY_URL: myregistry.io
+  REGISTRY_URL: gcr.io
   NAMESPACE: fun7
+  PROJECT_ID: fun7-434914
+  CLUSTER_NAME: fun7cluster
+  REGION: us-central1
 
 jobs:
   build-and-deploy:
@@ -23,18 +26,41 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
   
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: ${{ secrets.SERVICEACCOUNT_KEY }}
+
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v2'
+      with:
+        cluster_name: "$CLUSTER_NAME"
+        location: "$REGION"
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: Install gcloud
+      run: curl https://sdk.cloud.google.com | bash
+
     - name: Build the contianer
       run : | 
+        gcloud auth configure-docker
         echo "Building container..."
-        docker build -t "$REGISTRY_URL:$IMAGE_NAME" . --no-cache
-        # docker push "$REGISTRY_URL:$IMAGE_NAME"
+        docker build -t "$REGISTRY_URL/$PROJECT_ID/$IMAGE_NAME:latest" . --no-cache
+        docker push "$REGISTRY_URL/$PROJECT_ID/$IMAGE_NAME:latest"
       working-directory: ./cts_server
 
     - name: Deploy the application
       run : |
         echo "Update deployment using Helm ..."
         # force resource updates through a replacement strategy
-        # helm update --install --force -n  "$NAMESPACE" --create-namespace ctsserver . 
+        helm upgrade --install \
+          --force -n "$NAMESPACE" --create-namespace \
+          --set image.name="$REGISTRY_URL/$PROJECT_ID/$IMAGE_NAME" \
+          ctsserver \
+          . 
       working-directory: ./helmchart/CTS
       
     - name: Cleanup the container and continaer image

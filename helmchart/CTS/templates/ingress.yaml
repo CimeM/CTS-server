@@ -5,12 +5,8 @@ metadata:
   annotations: 
     {{- .Values.ingress.annotations | toYaml | nindent 4 }}
 spec:
-  tls:
-  - hosts: 
-    - {{ .Values.app.url.course_root }}
-    secretName: tls-{{ .Release.Name }}-service-ingress-http
   rules:
-    - host: {{ .Values.app.url.course_root }}
+    - host: {{ .Values.app.url.cts_root }}
       http:
         paths:
         - path: /
