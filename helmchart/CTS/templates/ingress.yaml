@@ -6,8 +6,8 @@ metadata:
     {{- .Values.ingress.annotations | toYaml | nindent 4 }}
 spec:
   rules:
-    # - host: {{ .Values.app.url.cts_root }}
-    - http:
+    - host: {{ .Values.app.url.cts_root }}
+      http:
         paths:
         - path: /
           pathType: Prefix

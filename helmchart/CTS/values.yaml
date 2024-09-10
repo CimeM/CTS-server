@@ -16,7 +16,7 @@ namespace: default
 
 app:
   url:
-    cts_root: cts.mydomain.com
+    cts_root: fun7cts1.com
 
 imagePullSecrets: []
 nameOverride: ""

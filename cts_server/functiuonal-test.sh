@@ -1,9 +1,7 @@
 #!bin/sh
 set -uex;
 
-IMAGE_NAME=cts_server
-CONTAINER_NAME=ctsservertest
-TEST_URL=localhost:8000/ping
+source variables.sh
 
 # build the container
 docker build -t "$IMAGE_NAME" . --no-cache
@@ -17,7 +15,7 @@ cleanup() {
 trap cleanup EXIT
 
 # run the server
-docker run -itd --rm -p 8000:8000 --name $CONTAINER_NAME $IMAGE_NAME
+docker run -itd --rm -p 8000:80 --name $CONTAINER_NAME $IMAGE_NAME
 
 # waiting for the continer to be ready
 sleep 2
