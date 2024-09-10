@@ -40,9 +40,6 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: Install gcloud
-      run: curl https://sdk.cloud.google.com | bash
-
     - name: Build the contianer
       run : | 
         gcloud auth configure-docker
