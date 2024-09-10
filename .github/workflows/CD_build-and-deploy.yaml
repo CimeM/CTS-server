@@ -34,8 +34,8 @@ jobs:
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v2'
       with:
-        cluster_name: "$CLUSTER_NAME"
-        location: "$REGION"
+        cluster_name: 'fun7cluster'
+        location: 'us-central1-a'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'

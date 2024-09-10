@@ -15,7 +15,7 @@ gcloud container clusters create-auto "$CLUSTER_NAME" \
 gcloud container clusters get-credentials "$CLUSTER_NAME" \
     --location "$REGION"
 
-helm upgrade --install ctsserver ../helmchart/CTS/. --force -n "$NAMESPACE" \
-    --create-namespace  \
-    --set image.name=nginx \
-    --set image.tag=latest 
+helm upgrade --install \
+    --force -n "$NAMESPACE" --create-namespace \
+    --set image.name="gcr.io/$PROJECT_ID/cts_server:latest" \
+    ctsserver ../helmchart/CTS/.
