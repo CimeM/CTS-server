@@ -26,7 +26,7 @@ Run the application using docker
 
 ``` bash
 cd cts_server
-docker run -itd --rm -p 8000:8000 --name ctscontainer ctsimage
+docker run -itd --rm -p 8000:80 --name ctscontainer ctsimage
 ```
 
 ## How to test the application
