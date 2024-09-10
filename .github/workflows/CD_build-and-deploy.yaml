@@ -35,7 +35,7 @@ jobs:
       uses: 'google-github-actions/get-gke-credentials@v2'
       with:
         cluster_name: 'fun7cluster'
-        location: 'us-central1-a'
+        location: 'us-central1'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
