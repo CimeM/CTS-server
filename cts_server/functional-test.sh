@@ -9,13 +9,19 @@ echo "starting the server"
 
 cleanup() {
   echo "Cleaning up..."
-  docker stop $CONTAINER_NAME
+  docker stop "$CONTAINER_NAME"
 }
 # execute this no matter the outcome
 trap cleanup EXIT
 
 # run the server
-docker run -itd --rm -p 8000:80 --name $CONTAINER_NAME $IMAGE_NAME
+docker run -d --rm -p 8000:80 --name "$CONTAINER_NAME" "$IMAGE_NAME"
+
+# local development
+# docker run -it --rm -p 8000:80 \
+#   -v ./src:/app \
+#   --name $CONTAINER_NAME $IMAGE_NAME \
+#   bash -c "uvicorn main:app --host 0.0.0.0 --port 80 --reload"
 
 # waiting for the continer to be ready
 sleep 2
@@ -32,4 +38,3 @@ else
     echo "Status code: $HTTP_CODE"
     echo "Response body: $RESPONSE"
 fi
-
